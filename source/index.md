@@ -2,11 +2,11 @@
 title: API Reference
 
 language_tabs:
-  - cURL
-
+  - shell
+  - ruby
+  - python
 
 toc_footers:
-  - <a href='http://www.dirxion.com'>Dirxion</a>
   - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -17,40 +17,65 @@ search: true
 
 # Introduction
 
-Welcome to the Dirxion Products API! You can use our API to access Products API endpoints.
+Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
 
-This example API documentation page was created with [Slate](http://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
 # Authentication
 
-> The Dirxion products API uses keys to allow access to the API. The key is expected in the header of all requests:
+> To authorize, use this code:
 
-```cURL
-# With cURL, you can just pass the correct header with each request
+```ruby
+require 'kittn'
 
-curl "http://account.drxlive.com/api/businesses" \
-  -H "Authorization: Token token=TOK3N"
+api = Kittn::APIClient.authorize!('meowmeowmeow')
 ```
 
-> Make sure to replace `TOK3N` with your API key.
+```python
+import kittn
 
-The Dirxion Product API uses keys to allow access to the API.
+api = kittn.authorize('meowmeowmeow')
+```
 
-The Dirxion Product API  expects for the API key to be included in all API requests to the server in a header that looks like the following:
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://api.drxserv.com"
+  -H "Authorization: Token token=meowmeowmeow"
+```
 
-`Authorization: Token token="TOK3N"`
+> Make sure to replace `meowmeowmeow` with your API key.
+
+DRX Products uses API keys to allow access to the API.
+
+DRX Products expects for the API key to be included in all API requests to the server in a header that looks like the following:
+
+`Authorization: Token token=meowmeowmeow`
 
 <aside class="notice">
-You must replace `TOK3N` with your API key.
+You must replace <code>meowmeowmeow</code> with your personal API key.
 </aside>
 
-# Accounts (Only Used for Admin Functions)
+# Products
 
-## Get All Accounts
+## Get All Products
 
-```cURL
-curl "http://example.com/api/accounts"
-  -H "Authorization: TOK3N"
+```ruby
+require 'kittn'
+
+api = Kittn::APIClient.authorize!('meowmeowmeow')
+api.kittens.get
+```
+
+```python
+import kittn
+
+api = kittn.authorize('meowmeowmeow')
+api.kittens.get()
+```
+
+```shell
+curl "http://api.drxserv.com/products"
+  -H "Authorization: meowmeowmeow"
 ```
 
 > The above command returns JSON structured like this:
@@ -59,28 +84,35 @@ curl "http://example.com/api/accounts"
 [
   {
     "id": 1,
-    "name": "Acklands",
-    "address": "123 main street yourtown, mo 63122"
+    "name": "Fluffums",
+    "item_id": "calico"
+  },
+  {
+    "id": 2,
+    "name": "Isis",
+    "item_id": "unknown"
   }
 ]
+```
 
+This endpoint retrieves all products.
 
 ### HTTP Request
 
-`GET http://example.com/kittens`
+`GET http://api.drxserv.com/products`
 
 ### Query Parameters
 
 Parameter | Default | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+category | empty | Limit the products to this specific category id.
+brand | empty | Limit the products to this specific brand id.
 
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
 </aside>
 
-## Get a Specific Kitten
+## Get a Specific Product
 
 ```ruby
 require 'kittn'
@@ -97,7 +129,7 @@ api.kittens.get(2)
 ```
 
 ```shell
-curl "http://example.com/api/kittens/3"
+curl "http://api.drxserv.com/products/2"
   -H "Authorization: meowmeowmeow"
 ```
 
@@ -107,23 +139,53 @@ curl "http://example.com/api/kittens/3"
 {
   "id": 2,
   "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "item_id": "unknown"
 }
 ```
 
-This endpoint retrieves a specific kitten.
+This endpoint retrieves a specific product.
 
 <aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET http://api.drxserv.com/products/<ID>`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the cat to retrieve
+ID | The ID of the product to retrieve
 
+# Categories
+
+## Get All Categories
+
+This endpoint retrieves all categories
+
+### HTTP Request
+
+`GET http://api.drxserv.com/categories`
+
+### Query Parameters
+
+Parameter | Required | Description
+--------- | ------- | -----------
+parent | optional | Limit to a specific parent category. A blank value will return top level categories.
+
+# Search
+
+## Search Products
+
+This endpoint searches all products
+
+### HTTP Request
+
+`GET http://api.drxserv.com/search/products`
+
+
+### Query Parameters
+
+Parameter | Type   | Description
+--------- | ------ | -----------
+q         | string | The search keywords
