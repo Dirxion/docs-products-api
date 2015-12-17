@@ -1,10 +1,8 @@
 ---
-title: API Reference
+title: Composer API Reference
 
 language_tabs:
   - shell
-  - ruby
-  - python
 
 toc_footers:
   - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
@@ -17,37 +15,24 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
-
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Welcome to the Composer API!
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "http://api.drxserv.com"
+curl "http://drxserv.com/api"
+  -H "Accept: application/vnd.drxserv+json; version=1"
   -H "Authorization: Token token=meowmeowmeow"
 ```
 
 > Make sure to replace `meowmeowmeow` with your API key.
 
-DRX Products uses API keys to allow access to the API.
+Composer uses API keys to allow access to the API.
 
-DRX Products expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Composer expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
 `Authorization: Token token=meowmeowmeow`
 
@@ -55,51 +40,40 @@ DRX Products expects for the API key to be included in all API requests to the s
 You must replace <code>meowmeowmeow</code> with your personal API key.
 </aside>
 
+# Current Version
+
+`Accept: application/vnd.drxserv+json; version=1`
+
 # Products
 
 ## Get All Products
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
 ```shell
-curl "http://api.drxserv.com/products"
+curl "http://drxserv.com/api/products"
+  -H "Accept: application/vnd.drxserv+json; version=1"
   -H "Authorization: meowmeowmeow"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "item_id": "calico"
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "item_id": "unknown"
-  }
-]
+{
+  "products": [
+    {
+      "id": "564a2b774ae4921ebf000012"
+    },
+    {
+      "id": "564a2b7e4ae4921ebf000153"
+    }
+  ]
+}
 ```
 
 This endpoint retrieves all products.
 
 ### HTTP Request
 
-`GET http://api.drxserv.com/products`
+`GET http://drxserv.com/api/products`
 
 ### Query Parameters
 
@@ -114,22 +88,9 @@ Remember — a happy kitten is an authenticated kitten!
 
 ## Get a Specific Product
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
 ```shell
-curl "http://api.drxserv.com/products/2"
+curl "http://drxserv.com/api/products/2"
+  -H "Accept: application/vnd.drxserv+json; version=1"
   -H "Authorization: meowmeowmeow"
 ```
 
@@ -137,9 +98,9 @@ curl "http://api.drxserv.com/products/2"
 
 ```json
 {
-  "id": 2,
-  "name": "Isis",
-  "item_id": "unknown"
+  "product": {
+    "id": "564a2b774ae4921ebf000012"
+  }
 }
 ```
 
@@ -149,7 +110,7 @@ This endpoint retrieves a specific product.
 
 ### HTTP Request
 
-`GET http://api.drxserv.com/products/<ID>`
+`GET http://drxserv.com/api/products/<ID>`
 
 ### URL Parameters
 
@@ -165,7 +126,7 @@ This endpoint retrieves all categories
 
 ### HTTP Request
 
-`GET http://api.drxserv.com/categories`
+`GET http://drxserv.com/api/categories`
 
 ### Query Parameters
 
@@ -181,7 +142,7 @@ This endpoint searches all products
 
 ### HTTP Request
 
-`GET http://api.drxserv.com/search/products`
+`GET http://drxserv.com/api/search/products`
 
 
 ### Query Parameters
